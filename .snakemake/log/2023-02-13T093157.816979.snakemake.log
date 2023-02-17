@@ -1,0 +1,38 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                     count    min threads    max threads
+--------------------  -------  -------------  -------------
+all                         1              1              1
+filter_peaks                4              1              1
+filter_summits              4              1              1
+peak_calling                4              1              1
+samtools_genome_info        4              1              1
+samtools_index              4              1              1
+samtools_sort               4              1              1
+total                      25              1              1
+
+Select jobs to execute...
+
+[Mon Feb 13 09:31:57 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119839.sam
+    output: results/mapping/SRR8119839_sorted.bam
+    jobid: 10
+    reason: Updated input files: results/mapping/SRR8119839.sam
+    wildcards: sample=SRR8119839
+    resources: tmpdir=/tmp
+
+Terminating processes on user request, this might take some time.
+[Mon Feb 13 09:36:46 2023]
+Error in rule samtools_sort:
+    jobid: 10
+    input: results/mapping/SRR8119839.sam
+    output: results/mapping/SRR8119839_sorted.bam
+    shell:
+        samtools sort results/mapping/SRR8119839.sam -o results/mapping/SRR8119839_sorted.bam
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2023-02-13T093157.816979.snakemake.log

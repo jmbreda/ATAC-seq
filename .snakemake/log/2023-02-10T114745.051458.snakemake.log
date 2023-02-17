@@ -1,0 +1,94 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 12
+Rules claiming more threads will be scaled down.
+Job stats:
+job                     count    min threads    max threads
+--------------------  -------  -------------  -------------
+all                         1              1              1
+filter_peaks                4              1              1
+filter_summits              4              1              1
+map                         1              8              8
+peak_calling                4              1              1
+samtools_genome_info        1              1              1
+samtools_index              2              1              1
+samtools_sort               1              1              1
+total                      18              1              8
+
+Select jobs to execute...
+
+[Fri Feb 10 11:47:45 2023]
+rule map:
+    input: results/trimmomatic/SRR8119838_forward_paired.fq.gz, results/trimmomatic/SRR8119838_reverse_paired.fq.gz
+    output: results/mapping/SRR8119838.sam
+    jobid: 12
+    reason: Forced execution
+    wildcards: sample=SRR8119838
+    threads: 8
+    resources: tmpdir=/tmp
+
+
+[Fri Feb 10 11:47:45 2023]
+rule samtools_index:
+    input: results/mapping/SRR8119839_sorted.bam
+    output: results/mapping/SRR8119839_sorted.bam.bai
+    jobid: 21
+    reason: Missing output files: results/mapping/SRR8119839_sorted.bam.bai
+    wildcards: sample=SRR8119839
+    resources: tmpdir=/tmp
+
+
+[Fri Feb 10 11:47:45 2023]
+rule peak_calling:
+    input: results/mapping/SRR8119853_sorted.bam, results/mapping/SRR8119853_sorted.bam.bai, results/mapping/SRR8119853_genome.info
+    output: results/peaks/SRR8119853_peaks.gappedPeak, results/peaks/SRR8119853_summits.bed
+    jobid: 31
+    reason: Missing output files: results/peaks/SRR8119853_summits.bed, results/peaks/SRR8119853_peaks.gappedPeak
+    wildcards: sample=SRR8119853
+    resources: tmpdir=/tmp
+
+
+[Fri Feb 10 11:47:45 2023]
+rule peak_calling:
+    input: results/mapping/SRR8119852_sorted.bam, results/mapping/SRR8119852_sorted.bam.bai, results/mapping/SRR8119852_genome.info
+    output: results/peaks/SRR8119852_peaks.gappedPeak, results/peaks/SRR8119852_summits.bed
+    jobid: 24
+    reason: Missing output files: results/peaks/SRR8119852_peaks.gappedPeak, results/peaks/SRR8119852_summits.bed
+    wildcards: sample=SRR8119852
+    resources: tmpdir=/tmp
+
+[Fri Feb 10 11:51:07 2023]
+Error in rule peak_calling:
+    jobid: 24
+    input: results/mapping/SRR8119852_sorted.bam, results/mapping/SRR8119852_sorted.bam.bai, results/mapping/SRR8119852_genome.info
+    output: results/peaks/SRR8119852_peaks.gappedPeak, results/peaks/SRR8119852_summits.bed
+    shell:
+        HMMRATAC -b results/mapping/SRR8119852_sorted.bam -i results/mapping/SRR8119852_sorted.bam.bai -g results/mapping/SRR8119852_genome.info --window 5000000
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Fri Feb 10 11:51:35 2023]
+Error in rule peak_calling:
+    jobid: 31
+    input: results/mapping/SRR8119853_sorted.bam, results/mapping/SRR8119853_sorted.bam.bai, results/mapping/SRR8119853_genome.info
+    output: results/peaks/SRR8119853_peaks.gappedPeak, results/peaks/SRR8119853_summits.bed
+    shell:
+        HMMRATAC -b results/mapping/SRR8119853_sorted.bam -i results/mapping/SRR8119853_sorted.bam.bai -g results/mapping/SRR8119853_genome.info --window 5000000
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Fri Feb 10 11:51:40 2023]
+Finished job 21.
+1 of 18 steps (6%) done
+[Fri Feb 10 11:57:39 2023]
+Error in rule map:
+    jobid: 12
+    input: results/trimmomatic/SRR8119838_forward_paired.fq.gz, results/trimmomatic/SRR8119838_reverse_paired.fq.gz
+    output: results/mapping/SRR8119838.sam
+    shell:
+        bwa-mem2 mem /scratch/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa results/trimmomatic/SRR8119838_forward_paired.fq.gz results/trimmomatic/SRR8119838_reverse_paired.fq.gz > results/mapping/SRR8119838.sam
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job map since they might be corrupted:
+results/mapping/SRR8119838.sam
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-02-10T114745.051458.snakemake.log

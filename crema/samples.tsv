@@ -1,0 +1,5 @@
+sample	type	fq1	fq2
+Male_Liver_r2	fg	../resources/reads/SRR8119838_1.fastq.gz	../resources/reads/SRR8119838_2.fastq.gz
+Male_Liver_r1	fg	../resources/reads/SRR8119839_1.fastq.gz	../resources/reads/SRR8119839_2.fastq.gz
+Female_Liver_r1	fg	../resources/reads/SRR8119852_1.fastq.gz	../resources/reads/SRR8119852_2.fastq.gz
+Female_Liver_r2	fg	../resources/reads/SRR8119853_1.fastq.gz	../resources/reads/SRR8119853_2.fastq.gz

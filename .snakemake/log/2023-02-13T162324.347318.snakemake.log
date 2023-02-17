@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+filter_peaks          4              1              1
+filter_summits        4              1              1
+peak_calling          4              1              1
+total                13              1              1
+
+Select jobs to execute...
+
+[Mon Feb 13 16:23:24 2023]
+rule peak_calling:
+    input: results/mapping/SRR8119839_sorted.bam, results/mapping/SRR8119839_sorted.bam.bai, results/mapping/SRR8119839_genome.info
+    output: results/peaks/SRR8119839_peaks.gappedPeak, results/peaks/SRR8119839_summits.bed
+    jobid: 9
+    reason: Missing output files: results/peaks/SRR8119839_peaks.gappedPeak, results/peaks/SRR8119839_summits.bed
+    wildcards: sample=SRR8119839
+    resources: tmpdir=/tmp
+
+[Mon Feb 13 16:26:45 2023]
+Error in rule peak_calling:
+    jobid: 9
+    input: results/mapping/SRR8119839_sorted.bam, results/mapping/SRR8119839_sorted.bam.bai, results/mapping/SRR8119839_genome.info
+    output: results/peaks/SRR8119839_peaks.gappedPeak, results/peaks/SRR8119839_summits.bed
+    shell:
+        HMMRATAC -b results/mapping/SRR8119839_sorted.bam -i results/mapping/SRR8119839_sorted.bam.bai -g results/mapping/SRR8119839_genome.info --window 2500000
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-02-13T162324.347318.snakemake.log

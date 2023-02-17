@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                     count    min threads    max threads
+--------------------  -------  -------------  -------------
+all                         1              1              1
+filter_peaks                1              1              1
+filter_summits              1              1              1
+map                         1              8              8
+peak_calling                1              1              1
+samtools_genome_info        1              1              1
+samtools_index              1              1              1
+samtools_sort               1              1              1
+trimming                    1              1              1
+total                       9              1              8
+
+Select jobs to execute...
+
+[Tue Feb  7 17:18:30 2023]
+rule trimming:
+    input: resources/reads/test_1.fastq.gz, resources/reads/test_2.fastq.gz
+    output: results/trimmomatic/test_forward_paired.fq.gz, results/trimmomatic/test_forward_unpaired.fq.gz, results/trimmomatic/test_reverse_paired.fq.gz, results/trimmomatic/test_reverse_unpaired.fq.gz
+    log: logs/trimmomatic/test.log
+    jobid: 7
+    reason: Missing output files: results/trimmomatic/test_forward_paired.fq.gz, results/trimmomatic/test_reverse_paired.fq.gz
+    wildcards: sample=test
+    resources: tmpdir=/tmp
+
+RuleException in rule trimming in file /home/jbreda/ATACseq/workflow/atac_seq_preprocessing.smk, line 34:
+NameError: The name "'adapter'" is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+        trimmomatic PE {input} {output.forward_paired} {output.forward_unpaired} {output.reverse_paired} {output.reverse_unpaired}         ILLUMINACLIP:{config['adapter']} LEADING:{config[leading]} TRAILING:{config[trailing]} SLIDINGWINDOW:{config[window]} MINLEN:{config[minlen]}
+        

@@ -1,0 +1,333 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                     count    min threads    max threads
+--------------------  -------  -------------  -------------
+all                         1              1              1
+fastqc                      8              1              1
+filter_peaks                4              1              1
+filter_summits              4              1              1
+map                         4              8              8
+peak_calling                4              1              1
+samtools_genome_info        4              1              1
+samtools_index              4              1              1
+samtools_sort               4              1              1
+trimming                    4              1              1
+total                      41              1              8
+
+Select jobs to execute...
+
+[Tue Feb  7 17:57:38 2023]
+rule trimming:
+    input: resources/reads/SRR8119852_1.fastq.gz, resources/reads/SRR8119852_2.fastq.gz
+    output: results/trimmomatic/SRR8119852_forward_paired.fq.gz, results/trimmomatic/SRR8119852_forward_unpaired.fq.gz, results/trimmomatic/SRR8119852_reverse_paired.fq.gz, results/trimmomatic/SRR8119852_reverse_unpaired.fq.gz
+    log: logs/trimmomatic/SRR8119852.log
+    jobid: 27
+    reason: Missing output files: results/trimmomatic/SRR8119852_forward_paired.fq.gz, results/trimmomatic/SRR8119852_reverse_paired.fq.gz
+    wildcards: sample=SRR8119852
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119838_1.fastq.gz
+    output: results/fastqc/SRR8119838_1_fastqc.html
+    log: logs/fastqc/SRR8119838_1.log
+    jobid: 1
+    reason: Missing output files: results/fastqc/SRR8119838_1_fastqc.html
+    wildcards: sample=SRR8119838, read=1
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119838_2.fastq.gz
+    output: results/fastqc/SRR8119838_2_fastqc.html
+    log: logs/fastqc/SRR8119838_2.log
+    jobid: 2
+    reason: Missing output files: results/fastqc/SRR8119838_2_fastqc.html
+    wildcards: sample=SRR8119838, read=2
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule trimming:
+    input: resources/reads/SRR8119839_1.fastq.gz, resources/reads/SRR8119839_2.fastq.gz
+    output: results/trimmomatic/SRR8119839_forward_paired.fq.gz, results/trimmomatic/SRR8119839_forward_unpaired.fq.gz, results/trimmomatic/SRR8119839_reverse_paired.fq.gz, results/trimmomatic/SRR8119839_reverse_unpaired.fq.gz
+    log: logs/trimmomatic/SRR8119839.log
+    jobid: 20
+    reason: Missing output files: results/trimmomatic/SRR8119839_reverse_paired.fq.gz, results/trimmomatic/SRR8119839_forward_paired.fq.gz
+    wildcards: sample=SRR8119839
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119852_1.fastq.gz
+    output: results/fastqc/SRR8119852_1_fastqc.html
+    log: logs/fastqc/SRR8119852_1.log
+    jobid: 5
+    reason: Missing output files: results/fastqc/SRR8119852_1_fastqc.html
+    wildcards: sample=SRR8119852, read=1
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119853_1.fastq.gz
+    output: results/fastqc/SRR8119853_1_fastqc.html
+    log: logs/fastqc/SRR8119853_1.log
+    jobid: 7
+    reason: Missing output files: results/fastqc/SRR8119853_1_fastqc.html
+    wildcards: sample=SRR8119853, read=1
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule trimming:
+    input: resources/reads/SRR8119838_1.fastq.gz, resources/reads/SRR8119838_2.fastq.gz
+    output: results/trimmomatic/SRR8119838_forward_paired.fq.gz, results/trimmomatic/SRR8119838_forward_unpaired.fq.gz, results/trimmomatic/SRR8119838_reverse_paired.fq.gz, results/trimmomatic/SRR8119838_reverse_unpaired.fq.gz
+    log: logs/trimmomatic/SRR8119838.log
+    jobid: 13
+    reason: Missing output files: results/trimmomatic/SRR8119838_reverse_paired.fq.gz, results/trimmomatic/SRR8119838_forward_paired.fq.gz
+    wildcards: sample=SRR8119838
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule trimming:
+    input: resources/reads/SRR8119853_1.fastq.gz, resources/reads/SRR8119853_2.fastq.gz
+    output: results/trimmomatic/SRR8119853_forward_paired.fq.gz, results/trimmomatic/SRR8119853_forward_unpaired.fq.gz, results/trimmomatic/SRR8119853_reverse_paired.fq.gz, results/trimmomatic/SRR8119853_reverse_unpaired.fq.gz
+    log: logs/trimmomatic/SRR8119853.log
+    jobid: 34
+    reason: Missing output files: results/trimmomatic/SRR8119853_forward_paired.fq.gz, results/trimmomatic/SRR8119853_reverse_paired.fq.gz
+    wildcards: sample=SRR8119853
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119839_1.fastq.gz
+    output: results/fastqc/SRR8119839_1_fastqc.html
+    log: logs/fastqc/SRR8119839_1.log
+    jobid: 3
+    reason: Missing output files: results/fastqc/SRR8119839_1_fastqc.html
+    wildcards: sample=SRR8119839, read=1
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119839_2.fastq.gz
+    output: results/fastqc/SRR8119839_2_fastqc.html
+    log: logs/fastqc/SRR8119839_2.log
+    jobid: 4
+    reason: Missing output files: results/fastqc/SRR8119839_2_fastqc.html
+    wildcards: sample=SRR8119839, read=2
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119852_2.fastq.gz
+    output: results/fastqc/SRR8119852_2_fastqc.html
+    log: logs/fastqc/SRR8119852_2.log
+    jobid: 6
+    reason: Missing output files: results/fastqc/SRR8119852_2_fastqc.html
+    wildcards: sample=SRR8119852, read=2
+    resources: tmpdir=/tmp
+
+
+[Tue Feb  7 17:57:38 2023]
+rule fastqc:
+    input: resources/reads/SRR8119853_2.fastq.gz
+    output: results/fastqc/SRR8119853_2_fastqc.html
+    log: logs/fastqc/SRR8119853_2.log
+    jobid: 8
+    reason: Missing output files: results/fastqc/SRR8119853_2_fastqc.html
+    wildcards: sample=SRR8119853, read=2
+    resources: tmpdir=/tmp
+
+[Tue Feb  7 18:02:23 2023]
+Finished job 8.
+1 of 41 steps (2%) done
+[Tue Feb  7 18:02:30 2023]
+Finished job 6.
+2 of 41 steps (5%) done
+[Tue Feb  7 18:02:30 2023]
+Finished job 5.
+3 of 41 steps (7%) done
+[Tue Feb  7 18:02:33 2023]
+Finished job 7.
+4 of 41 steps (10%) done
+[Tue Feb  7 18:04:42 2023]
+Finished job 4.
+5 of 41 steps (12%) done
+[Tue Feb  7 18:04:43 2023]
+Finished job 2.
+6 of 41 steps (15%) done
+[Tue Feb  7 18:04:46 2023]
+Finished job 1.
+7 of 41 steps (17%) done
+[Tue Feb  7 18:05:01 2023]
+Finished job 3.
+8 of 41 steps (20%) done
+[Tue Feb  7 18:33:56 2023]
+Finished job 27.
+9 of 41 steps (22%) done
+Select jobs to execute...
+
+[Tue Feb  7 18:33:56 2023]
+rule map:
+    input: results/trimmomatic/SRR8119852_forward_paired.fq.gz, results/trimmomatic/SRR8119852_reverse_paired.fq.gz
+    output: results/mapping/SRR8119852.sam
+    jobid: 26
+    reason: Missing output files: results/mapping/SRR8119852.sam; Input files updated by another job: results/trimmomatic/SRR8119852_forward_paired.fq.gz, results/trimmomatic/SRR8119852_reverse_paired.fq.gz
+    wildcards: sample=SRR8119852
+    threads: 8
+    resources: tmpdir=/tmp
+
+[Tue Feb  7 18:34:15 2023]
+Finished job 34.
+10 of 41 steps (24%) done
+Select jobs to execute...
+
+[Tue Feb  7 18:34:15 2023]
+rule map:
+    input: results/trimmomatic/SRR8119853_forward_paired.fq.gz, results/trimmomatic/SRR8119853_reverse_paired.fq.gz
+    output: results/mapping/SRR8119853.sam
+    jobid: 33
+    reason: Missing output files: results/mapping/SRR8119853.sam; Input files updated by another job: results/trimmomatic/SRR8119853_forward_paired.fq.gz, results/trimmomatic/SRR8119853_reverse_paired.fq.gz
+    wildcards: sample=SRR8119853
+    threads: 8
+    resources: tmpdir=/tmp
+
+[Tue Feb  7 18:55:45 2023]
+Finished job 20.
+11 of 41 steps (27%) done
+Select jobs to execute...
+[Tue Feb  7 19:01:34 2023]
+Finished job 13.
+12 of 41 steps (29%) done
+
+[Tue Feb  7 19:01:34 2023]
+rule map:
+    input: results/trimmomatic/SRR8119839_forward_paired.fq.gz, results/trimmomatic/SRR8119839_reverse_paired.fq.gz
+    output: results/mapping/SRR8119839.sam
+    jobid: 19
+    reason: Missing output files: results/mapping/SRR8119839.sam; Input files updated by another job: results/trimmomatic/SRR8119839_reverse_paired.fq.gz, results/trimmomatic/SRR8119839_forward_paired.fq.gz
+    wildcards: sample=SRR8119839
+    threads: 8
+    resources: tmpdir=/tmp
+
+[Wed Feb  8 03:14:09 2023]
+Finished job 26.
+13 of 41 steps (32%) done
+Select jobs to execute...
+
+[Wed Feb  8 03:14:09 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119852.sam
+    output: results/mapping/SRR8119852_sorted.bam
+    jobid: 25
+    reason: Missing output files: results/mapping/SRR8119852_sorted.bam; Input files updated by another job: results/mapping/SRR8119852.sam
+    wildcards: sample=SRR8119852
+    resources: tmpdir=/tmp
+
+[Wed Feb  8 03:18:44 2023]
+Finished job 33.
+14 of 41 steps (34%) done
+Select jobs to execute...
+
+[Wed Feb  8 03:18:44 2023]
+rule map:
+    input: results/trimmomatic/SRR8119838_forward_paired.fq.gz, results/trimmomatic/SRR8119838_reverse_paired.fq.gz
+    output: results/mapping/SRR8119838.sam
+    jobid: 12
+    reason: Missing output files: results/mapping/SRR8119838.sam; Input files updated by another job: results/trimmomatic/SRR8119838_reverse_paired.fq.gz, results/trimmomatic/SRR8119838_forward_paired.fq.gz
+    wildcards: sample=SRR8119838
+    threads: 8
+    resources: tmpdir=/tmp
+
+
+[Wed Feb  8 03:18:44 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119853.sam
+    output: results/mapping/SRR8119853_sorted.bam
+    jobid: 32
+    reason: Missing output files: results/mapping/SRR8119853_sorted.bam; Input files updated by another job: results/mapping/SRR8119853.sam
+    wildcards: sample=SRR8119853
+    resources: tmpdir=/tmp
+
+[Wed Feb  8 03:46:37 2023]
+Finished job 25.
+15 of 41 steps (37%) done
+Select jobs to execute...
+
+[Wed Feb  8 03:46:37 2023]
+rule samtools_index:
+    input: results/mapping/SRR8119852_sorted.bam
+    output: results/mapping/SRR8119852_sorted.bam.bai
+    jobid: 28
+    reason: Missing output files: results/mapping/SRR8119852_sorted.bam.bai; Input files updated by another job: results/mapping/SRR8119852_sorted.bam
+    wildcards: sample=SRR8119852
+    resources: tmpdir=/tmp
+
+
+[Wed Feb  8 03:46:37 2023]
+rule samtools_genome_info:
+    input: results/mapping/SRR8119852_sorted.bam
+    output: results/mapping/SRR8119852_genome.info
+    jobid: 29
+    reason: Missing output files: results/mapping/SRR8119852_genome.info; Input files updated by another job: results/mapping/SRR8119852_sorted.bam
+    wildcards: sample=SRR8119852
+    resources: tmpdir=/tmp
+
+[Wed Feb  8 03:46:38 2023]
+Finished job 29.
+16 of 41 steps (39%) done
+[Wed Feb  8 03:48:34 2023]
+Finished job 28.
+17 of 41 steps (41%) done
+Select jobs to execute...
+
+[Wed Feb  8 03:48:34 2023]
+rule peak_calling:
+    input: results/mapping/SRR8119852_sorted.bam, results/mapping/SRR8119852_sorted.bam.bai, results/mapping/SRR8119852_genome.info
+    output: results/peaks/SRR8119852_peaks.gappedPeak, results/peaks/SRR8119852_summits.bed
+    jobid: 24
+    reason: Missing output files: results/peaks/SRR8119852_summits.bed; Input files updated by another job: results/mapping/SRR8119852_sorted.bam, results/mapping/SRR8119852_genome.info, results/mapping/SRR8119852_sorted.bam.bai
+    wildcards: sample=SRR8119852
+    resources: tmpdir=/tmp
+
+[Wed Feb  8 03:51:34 2023]
+Error in rule peak_calling:
+    jobid: 24
+    input: results/mapping/SRR8119852_sorted.bam, results/mapping/SRR8119852_sorted.bam.bai, results/mapping/SRR8119852_genome.info
+    output: results/peaks/SRR8119852_peaks.gappedPeak, results/peaks/SRR8119852_summits.bed
+    shell:
+        HMMRATAC -b results/mapping/SRR8119852_sorted.bam -i results/mapping/SRR8119852_sorted.bam.bai -g results/mapping/SRR8119852_genome.info --window 5000000
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Wed Feb  8 03:52:27 2023]
+Finished job 32.
+18 of 41 steps (44%) done
+[Wed Feb  8 06:10:25 2023]
+Finished job 19.
+19 of 41 steps (46%) done
+[Fri Feb 10 11:19:02 2023]
+Error in rule map:
+    jobid: 12
+    input: results/trimmomatic/SRR8119838_forward_paired.fq.gz, results/trimmomatic/SRR8119838_reverse_paired.fq.gz
+    output: results/mapping/SRR8119838.sam
+    shell:
+        bwa-mem2 mem /scratch/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa results/trimmomatic/SRR8119838_forward_paired.fq.gz results/trimmomatic/SRR8119838_reverse_paired.fq.gz > results/mapping/SRR8119838.sam
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job map since they might be corrupted:
+results/mapping/SRR8119838.sam
+Will exit after finishing currently running jobs (scheduler).
+Shutting down, this might take some time.
+Complete log: .snakemake/log/2023-02-07T175738.411346.snakemake.log

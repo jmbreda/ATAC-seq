@@ -1,0 +1,120 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job                     count    min threads    max threads
+--------------------  -------  -------------  -------------
+all                         1              1              1
+samtools_genome_info        4              1              1
+samtools_index              4              4              4
+samtools_sort               4              4              4
+total                      13              1              4
+
+Select jobs to execute...
+
+[Mon Feb 13 09:43:33 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119852.sam
+    output: results/mapping/SRR8119852_sorted.bam
+    jobid: 10
+    reason: Updated input files: results/mapping/SRR8119852.sam
+    wildcards: sample=SRR8119852
+    threads: 4
+    resources: tmpdir=/tmp
+
+
+[Mon Feb 13 09:43:34 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119838.sam
+    output: results/mapping/SRR8119838_sorted.bam
+    jobid: 2
+    reason: Missing output files: results/mapping/SRR8119838_sorted.bam
+    wildcards: sample=SRR8119838
+    threads: 4
+    resources: tmpdir=/tmp
+
+
+[Mon Feb 13 09:43:34 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119853.sam
+    output: results/mapping/SRR8119853_sorted.bam
+    jobid: 14
+    reason: Updated input files: results/mapping/SRR8119853.sam
+    wildcards: sample=SRR8119853
+    threads: 4
+    resources: tmpdir=/tmp
+
+
+[Mon Feb 13 09:43:34 2023]
+rule samtools_sort:
+    input: results/mapping/SRR8119839.sam
+    output: results/mapping/SRR8119839_sorted.bam
+    jobid: 6
+    reason: Missing output files: results/mapping/SRR8119839_sorted.bam; Updated input files: results/mapping/SRR8119839.sam
+    wildcards: sample=SRR8119839
+    threads: 4
+    resources: tmpdir=/tmp
+
+[Mon Feb 13 09:56:41 2023]
+Finished job 14.
+1 of 13 steps (8%) done
+Select jobs to execute...
+
+[Mon Feb 13 09:56:41 2023]
+rule samtools_genome_info:
+    input: results/mapping/SRR8119853_sorted.bam
+    output: results/mapping/SRR8119853_genome.info
+    jobid: 20
+    reason: Input files updated by another job: results/mapping/SRR8119853_sorted.bam
+    wildcards: sample=SRR8119853
+    resources: tmpdir=/tmp
+
+[Mon Feb 13 09:56:41 2023]
+Finished job 20.
+2 of 13 steps (15%) done
+Select jobs to execute...
+
+[Mon Feb 13 09:56:41 2023]
+rule samtools_index:
+    input: results/mapping/SRR8119853_sorted.bam
+    output: results/mapping/SRR8119853_sorted.bam.bai
+    jobid: 13
+    reason: Input files updated by another job: results/mapping/SRR8119853_sorted.bam
+    wildcards: sample=SRR8119853
+    threads: 4
+    resources: tmpdir=/tmp
+
+[Mon Feb 13 09:57:05 2023]
+Finished job 13.
+3 of 13 steps (23%) done
+[Mon Feb 13 10:11:54 2023]
+[Mon Feb 13 10:11:54 2023]
+Error in rule samtools_sort:
+    jobid: 10
+    input: results/mapping/SRR8119852.sam
+    output: results/mapping/SRR8119852_sorted.bam
+    shell:
+        samtools sort results/mapping/SRR8119852.sam -o results/mapping/SRR8119852_sorted.bam -@ 4
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Error in rule samtools_sort:
+    jobid: 2
+    input: results/mapping/SRR8119838.sam
+    output: results/mapping/SRR8119838_sorted.bam
+    shell:
+        samtools sort results/mapping/SRR8119838.sam -o results/mapping/SRR8119838_sorted.bam -@ 4
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Mon Feb 13 10:12:27 2023]
+Error in rule samtools_sort:
+    jobid: 6
+    input: results/mapping/SRR8119839.sam
+    output: results/mapping/SRR8119839_sorted.bam
+    shell:
+        samtools sort results/mapping/SRR8119839.sam -o results/mapping/SRR8119839_sorted.bam -@ 4
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-02-13T094333.630320.snakemake.log

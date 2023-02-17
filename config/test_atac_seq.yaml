@@ -1,0 +1,23 @@
+SAMPLE:
+    - 'test'
+
+
+
+    
+# fastqc
+fastqc_dir: 'results/fastqc'
+# Trimming
+trimmomatic_dir: 'results/trimmomatic'
+adapter: '../Trimmomatic/adapters/TruSeq3-PE.fa:2:30:10:2:True'
+leading: 3
+trailing: 3
+window: '4:15'
+minlen: 36
+# bwa mem
+mapping_dir: 'results/mapping'
+genome: '/scratch/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa'
+genome_idx: '/scratch/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa'
+# peak calling
+peak_dir: 'results/peaks'
+hmmratac:
+    window: 5000000

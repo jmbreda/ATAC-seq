@@ -1,0 +1,15 @@
+Failed to clean up metadata for the following files because the metadata was not present.
+If this is expected, there is nothing to do.
+Otherwise, the reason might be file system latency or still running jobs.
+Consider running metadata cleanup again.
+Files:
+results/fastqc/SRR8119838_1_fastqc.zip
+results/fastqc/SRR8119838_2_fastqc.zip
+results/fastqc/SRR8119839_1_fastqc.zip
+results/fastqc/SRR8119839_2_fastqc.zip
+results/fastqc/SRR8119852_1_fastqc.zip
+results/fastqc/SRR8119852_2_fastqc.zip
+results/fastqc/SRR8119853_1_fastqc.zip
+results/fastqc/SRR8119853_2_fastqc.zip
+results/fastqc/test_1_fastqc.zip
+results/fastqc/test_2_fastqc.zip
