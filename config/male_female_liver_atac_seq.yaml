@@ -3,7 +3,7 @@ SAMPLE:
     - 'SRR8119839'
     - 'SRR8119852'
     - 'SRR8119853'
-
+    
 # fastqc
 fastqc_dir: 'results/fastqc'
 # Trimming
@@ -20,4 +20,4 @@ genome_idx: '/scratch/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa'
 # peak calling
 peak_dir: 'results/peaks'
 hmmratac:
-    window: 2500000
+    window: 500000

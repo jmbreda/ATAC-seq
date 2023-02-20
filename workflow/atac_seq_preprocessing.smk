@@ -5,19 +5,14 @@ READS = ['1', '2']
 
 rule all:
     input:
-        #expand(os.path.join(config['fastqc_dir'],"{sample}_{read}_fastqc.html"),
-        #    sample=config['SAMPLE'],
-        #    read=READS),
-        #expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
-        #    sample=config['SAMPLE'])
-        #expand(os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai'),
-        #    sample=config['SAMPLE']),
-        #expand(os.path.join(config['mapping_dir'],'{sample}_genome.info'),
-        #    sample=config['SAMPLE'])
-        expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
+        expand(os.path.join(config['peak_dir'],'{sample}_accessible_regions.gappedPeak'),
             sample=config['SAMPLE']),
-        expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
+        expand(os.path.join(config['mapping_dir'],'{sample}_coverage.bw'),
             sample=config['SAMPLE'])
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
+        #    sample=config['SAMPLE']),
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
+        #    sample=config['SAMPLE'])
 
 rule fastqc:
     input:
@@ -100,18 +95,47 @@ rule samtools_genome_info:
     shell:
         "scripts/samtools_genome_info.sh {input} {output}"
 
+rule coverage:
+    input:
+        os.path.join(config['mapping_dir'],'{sample}_sorted.bam')
+    output:
+        os.path.join(config['mapping_dir'],'{sample}_coverage.bw')
+    shell:
+        """
+        module load gcc/11.3.0
+        module load py-deeptools
+        bamCoverage -b {input} -o {output}
+        """
+
 rule peak_calling:
+    resources:
+        nodes=1,
+        task=1,
+        cpu_per_task=1,
+        mem="200G",
+        time="12:00:00"
     input:
         bam = os.path.join(config['mapping_dir'],'{sample}_sorted.bam'),
         index = os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai'),
         genome = os.path.join(config['mapping_dir'],'{sample}_genome.info')
     output:
-        os.path.join(config['peak_dir'],'{sample}_peaks.gappedPeak'),
-        os.path.join(config['peak_dir'],'{sample}_summits.bed')
+        #peak=os.path.join(config['peak_dir'],'{sample}_peaks.gappedPeak'),
+        peak=os.path.join(config['peak_dir'],'{sample}_accessible_regions.gappedPeak')
+        #summit=os.path.join(config['peak_dir'],'{sample}_summits.bed')
+    #conda: "/home/jbreda/M-F_Liver_ATAC-seq/envs/hmmratac.yml"
     shell:
-        "HMMRATAC -b {input.bam} -i {input.index} -g {input.genome} --window {config[hmmratac][window]}"
+        """
+        source activate macs3
+        macs3 hmmratac --bam {input.bam} --outdir {config[peak_dir]} --name {wildcards.sample} --save-digested --save-states
+        """
+#-i {input.index} -g {input.genome} --window {config[hmmratac][window]}
 
 rule filter_peaks:
+    resources:
+        nodes=1,
+        task=1,
+        mem='10G',
+        time='04:00:00',
     input:
         os.path.join(config['peak_dir'],'{sample}_peaks.gappedPeak')
     output:
@@ -122,6 +146,11 @@ rule filter_peaks:
         """
 
 rule filter_summits:
+    resources:
+        nodes=1,
+        task=1,
+        mem='10G',
+        time='04:00:00',
     input:
         os.path.join(config['peak_dir'],'{sample}_summits.bed')
     output:
