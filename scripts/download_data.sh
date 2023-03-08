@@ -1,9 +1,8 @@
 #!/bin/bash
 
-DATASETS=(SRR8119838 SRR8119839 SRR8119852 SRR8119853)
-for dataset in ${DATASETS[@]}
+Accession_list='../resources/SRR_Acc_List.txt'
+for dataset in $(cat $Accession_list)
 do
 	echo $dataset
-	fasterq-dump $dataset --outdir resources/ -p
+	fasterq-dump $dataset --outdir /bigdata/jbreda/ATACseq/resources -p
 done
-	 	

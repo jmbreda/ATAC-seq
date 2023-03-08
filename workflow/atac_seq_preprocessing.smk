@@ -1,27 +1,28 @@
 import os
-configfile: "config/male_female_liver_atac_seq.yaml"
-#configfile: "config/test_atac_seq.yaml"
+import pandas as pd
+
+#configfile: "config/Liver_male_female_atac_seq.yaml"
+configfile: "config/All_tissue_male_female_atac_seq.yaml"
 READS = ['1', '2']
+sample_metadata = pd.read_csv(config['sample_metadata'])
 
 rule all:
     input:
         #expand(os.path.join(config['fastqc_dir'],"{sample}_{read}_fastqc.html"),
         #    sample=config['SAMPLE'],
         #    read=READS),
-        #expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
-        #    sample=config['SAMPLE'])
-        #expand(os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai'),
-        #    sample=config['SAMPLE']),
-        #expand(os.path.join(config['mapping_dir'],'{sample}_genome.info'),
-        #    sample=config['SAMPLE'])
-        expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
-            sample=config['SAMPLE']),
-        expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
+        expand(os.path.join(config['mapping_dir'],'{sample}_coverage.bw'),
             sample=config['SAMPLE'])
+        #expand(os.path.join(config['mapping_dir'],'{tissue}_coverage.tsv'),
+        #    tissue=config['TISSUE'])
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
+        #    sample=config['SAMPLE']),
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
+        #    sample=config['SAMPLE'])
 
 rule fastqc:
     input:
-        "resources/reads/{sample}_{read}.fastq.gz"
+        os.path.join(config['input_dir'],"{sample}_{read}.fastq")
     output:
         os.path.join(config['fastqc_dir'],"{sample}_{read}_fastqc.html")
     log:
@@ -39,7 +40,7 @@ rule fastqc:
 
 rule trimming:
     input:
-        ["resources/reads/{{sample}}_{read}.fastq.gz".format(read=read) for read in READS]
+        [os.path.join(config['input_dir'],"{{sample}}_{read}.fastq").format(read=read) for read in READS]
     output:
         forward_paired = os.path.join(config['trimmomatic_dir'],"{sample}_forward_paired.fq.gz"),
         forward_unpaired = os.path.join(config['trimmomatic_dir'],"{sample}_forward_unpaired.fq.gz"),
@@ -61,7 +62,6 @@ rule trimming:
 #		config['genome']
 #	shell:
 #		"bwa-mem2 index {input}"
-
 rule map:
     input:
         forward_paired = os.path.join(config['trimmomatic_dir'],"{sample}_forward_paired.fq.gz"),
@@ -70,7 +70,7 @@ rule map:
         index = config['genome']
     output:
         os.path.join(config['mapping_dir'],'{sample}.sam')
-    threads: 12
+    threads: 4
     shell:
         "bwa-mem2 mem -t {threads} {params.index} {input.forward_paired} {input.reverse_paired} > {output}"
 
@@ -99,6 +99,27 @@ rule samtools_genome_info:
         os.path.join(config['mapping_dir'],'{sample}_genome.info')
     shell:
         "scripts/samtools_genome_info.sh {input} {output}"
+
+rule coverage:
+    input:
+        os.path.join(config['mapping_dir'],'{sample}_sorted.bam')
+    output:
+        os.path.join(config['mapping_dir'],'{sample}_coverage.bw')
+    threads: 4
+    shell:
+        "bamCoverage -b {input} -o {output} --normalizeUsing CPM -p {threads}"
+
+rule combine_bigwigs:
+    input:
+        lambda wildcards: [os.path.join(config['mapping_dir'],f'{s}_coverage.bw') for s in sample_metadata.loc[sample_metadata.TISSUE==wildcards.tissue,'Run']]
+    params:
+        labels = lambda wildcards: list(sample_metadata.loc[sample_metadata.TISSUE==wildcards.tissue,'Sample Name'])
+    output:
+        npz=os.path.join(config['mapping_dir'],"{tissue}_coverage.npz"),
+        tsv=os.path.join(config['mapping_dir'],"{tissue}_coverage.tsv")
+    threads: 4
+    shell:
+        "multiBigwigSummary bins -b {input} -p {threads} -bs 50 -o {output.npz} --outRawCounts {output.tsv} --labels {params.labels}"
 
 rule peak_calling:
     input:
@@ -130,44 +151,6 @@ rule filter_summits:
         """
         awk -v OFS="\t" '$5>=10 {{print}}' {input} > {output}
         """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

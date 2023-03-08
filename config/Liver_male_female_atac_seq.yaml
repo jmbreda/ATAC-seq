@@ -1,0 +1,96 @@
+sample_metadata: 'resources/SraRunTable.txt'
+# fastq files dir
+input_dir: 'resources/reads'
+# fastqc
+fastqc_dir: 'results/fastqc'
+# Trimming
+trimmomatic_dir: 'results/trimmomatic'
+adapter: '../Trimmomatic/adapters/NexteraPE-PE.fa:2:30:10:2:True'
+leading: 3
+trailing: 3
+window: '4:15'
+minlen: 36
+# bwa mem
+mapping_dir: 'results/mapping'
+genome: '/bigdata/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa'
+# peak calling
+peak_dir: 'results/peaks'
+hmmratac:
+    window: 5000000
+
+SAMPLE:
+    - 'SRR8119838'
+    - 'SRR8119839'
+    - 'SRR8119852'
+    - 'SRR8119853'
+TISSUE:
+    - Liver
+SEX:
+    - male
+    - female
+    - SRR8119812: Male_Brownfat_Rep2
+    - SRR8119813: Male_Bladder_Rep1
+    - SRR8119814: Male_Bladder_Rep2
+    - SRR8119815: Female_Ovary_Rep2
+    - SRR8119816: Female_Ovary_Rep1
+    - SRR8119817: Female_Pancreas_Rep2
+    - SRR8119818: Female_Pancreas_Rep1
+    - SRR8119819: Female_Skeletalmuscle_Rep2
+    - SRR8119820: Female_Skeletalmuscle_Rep1
+    - SRR8119821: Female_Spleen_Rep2
+    - SRR8119822: Female_Spleen_Rep1
+    - SRR8119823: Female_Thymus_Rep2
+    - SRR8119824: Female_Thymus_Rep1
+    - SRR8119825: Male_Thymus_Rep1
+    - SRR8119826: Male_Spleen_Rep2
+    - SRR8119827: Male_Spleen_Rep1
+    - SRR8119828: Male_Stomach_Rep2
+    - SRR8119829: Male_Stomach_Rep1
+    - SRR8119830: Male_Largeintestine_Rep2
+    - SRR8119831: Male_Largeintestine_Rep1
+    - SRR8119832: Male_Kidney_Rep2
+    - SRR8119833: Male_Kidney_Rep1
+    - SRR8119834: Male_Heart_Rep2
+    - SRR8119835: Male_Heart_Rep1
+    - SRR8119836: Male_Cerebrum_Rep2
+    - SRR8119837: Male_Cerebrum_Rep1
+    - SRR8119838: Male_Liver_Rep2
+    - SRR8119839: Male_Liver_Rep1
+    - SRR8119840: Male_Thymus_Rep2
+    - SRR8119841: Male_Pancreas_Rep1
+    - SRR8119842: Female_Abdominalfat_Rep1
+    - SRR8119843: Female_Abdominalfat_Rep2
+    - SRR8119844: Female_Adrenalgland_Rep1
+    - SRR8119845: Female_Adrenalgland_Rep2
+    - SRR8119846: Female_Brownfat_Rep1
+    - SRR8119847: Female_Brownfat_Rep2
+    - SRR8119848: Female_Cerebellum_Rep1
+    - SRR8119849: Female_Cerebellum_Rep2
+    - SRR8119850: Female_Cerebrum_Rep1
+    - SRR8119851: Female_Cerebrum_Rep2
+    - SRR8119852: Female_Liver_Rep1
+    - SRR8119853: Female_Liver_Rep2
+    - SRR8119854: Female_Lung_Rep1
+    - SRR8119855: Female_Lung_Rep2
+    - SRR8119856: Female_Heart_Rep1
+    - SRR8119857: Female_Heart_Rep2
+    - SRR8119858: Female_Kidney_Rep1
+    - SRR8119859: Female_Kidney_Rep2
+    - SRR8119860: Male_Cerebellum_Rep1
+    - SRR8119861: Male_Cerebellum_Rep2
+    - SRR8119862: Female_Mesentericfat_Rep1
+    - SRR8119863: Female_Mesentericfat_Rep2
+    - SRR8119864: Male_Lung_Rep1
+    - SRR8119865: Male_Lung_Rep2
+    - SRR8119866: Male_Mesentericfat_Rep1
+    - SRR8119867: Male_Mesentericfat_Rep2
+    - SRR8119868: Male_Adrenalgland_Rep1
+    - SRR8119869: Male_Pancreas_Rep2
+    - SRR8119870: Male_Skeletalmuscle_Rep1
+    - SRR8119871: Male_Skeletalmuscle_Rep2
+    - SRR8119872: Male_Smallintestine_Rep1
+    - SRR8119873: Male_Smallintestine_Rep2
+    - SRR8119874: Male_Adrenalgland_Rep2
+    - SRR8119875: Female_Uterus_Rep1
+    - SRR8119876: Female_Uterus_Rep2
+    - SRR8119877: Male_Brownfat_Rep1

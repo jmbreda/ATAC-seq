@@ -1,0 +1,111 @@
+sample_metadata: 'resources/SraRunTable.txt'
+# fastq files dir
+input_dir: 'resources/reads'
+# fastqc
+fastqc_dir: 'results/fastqc'
+# Trimming
+trimmomatic_dir: 'results/trimmomatic'
+adapter: '../Trimmomatic/adapters/NexteraPE-PE.fa:2:30:10:2:True'
+leading: 3
+trailing: 3
+window: '4:15'
+minlen: 36
+# bwa mem
+mapping_dir: 'results/mapping'
+genome: '/bigdata/jbreda/genome/Mus_musculus.GRCm39.dna.primary_assembly.fa'
+# peak calling
+peak_dir: 'results/peaks'
+hmmratac:
+    window: 5000000
+
+SAMPLE:
+    - 'SRR8119812'
+    - 'SRR8119813'
+    - 'SRR8119814'
+    - 'SRR8119815'
+    - 'SRR8119816'
+    - 'SRR8119817'
+    - 'SRR8119818'
+    - 'SRR8119819'
+    - 'SRR8119820'
+    - 'SRR8119821'
+    - 'SRR8119822'
+    - 'SRR8119823'
+    - 'SRR8119824'
+    - 'SRR8119825'
+    - 'SRR8119826'
+    - 'SRR8119827'
+    - 'SRR8119828'
+    - 'SRR8119829'
+    - 'SRR8119830'
+    - 'SRR8119831'
+    - 'SRR8119832'
+    - 'SRR8119833'
+    - 'SRR8119834'
+    - 'SRR8119835'
+    - 'SRR8119836'
+    - 'SRR8119837'
+    - 'SRR8119838'
+    - 'SRR8119839'
+    - 'SRR8119840'
+    - 'SRR8119841'
+    - 'SRR8119842'
+    - 'SRR8119843'
+    - 'SRR8119844'
+    - 'SRR8119845'
+    - 'SRR8119846'
+    - 'SRR8119847'
+    - 'SRR8119848'
+    - 'SRR8119849'
+    - 'SRR8119850'
+    - 'SRR8119851'
+    - 'SRR8119852'
+    - 'SRR8119853'
+    - 'SRR8119854'
+    - 'SRR8119855'
+    - 'SRR8119856'
+    - 'SRR8119857'
+    - 'SRR8119858'
+    - 'SRR8119859'
+    - 'SRR8119860'
+    - 'SRR8119861'
+    - 'SRR8119862'
+    - 'SRR8119863'
+    - 'SRR8119864'
+    - 'SRR8119865'
+    - 'SRR8119866'
+    - 'SRR8119867'
+    - 'SRR8119868'
+    - 'SRR8119869'
+    - 'SRR8119870'
+    - 'SRR8119871'
+    - 'SRR8119872'
+    - 'SRR8119873'
+    - 'SRR8119874'
+    - 'SRR8119875'
+    - 'SRR8119876'
+    - 'SRR8119877'
+TISSUE:
+    - Abdominalfat
+    - Adrenalgland
+    - Bladder
+    - Brownfat
+    - Cerebellum
+    - Cerebrum
+    - Heart
+    - Kidney
+    - Largeintestine
+    - Liver
+    - Lung
+    - Mesentericfat
+    - Ovary
+    - Pancreas
+    - Skeletalmuscle
+    - Smallintestine
+    - Spleen
+    - Stomach
+    - Thymus
+    - Uterus
+SEX:
+    - male
+    - female

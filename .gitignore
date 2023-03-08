@@ -1,2 +1,5 @@
+.snakemake
 resources
 results
+logs
+tmp
