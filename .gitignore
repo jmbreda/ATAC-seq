@@ -1,4 +1,7 @@
-resources
-results
-.snakemake
+resources/
+results/
+.snakemake/
 tmp
+stderr/
+stdout/
+logs/

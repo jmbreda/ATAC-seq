@@ -11,14 +11,14 @@ rule all:
         #expand(os.path.join(config['fastqc_dir'],"{sample}_{read}_fastqc.html"),
         #    sample=config['SAMPLE'],
         #    read=READS),
-        #expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
-        #    sample=config['SAMPLE']),
+        expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
+            sample=config['SAMPLE']),
         #expand(os.path.join(config['mapping_dir'],'{sample}_coverage.bw'),
         #    sample=config['SAMPLE']),
         #expand(os.path.join(config['mapping_dir'],'{tissue}_coverage.tsv'),
-        #       tissue=config['TISSUE']),
-        expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
-            sample=config['SAMPLE']),
+        #    tissue=config['TISSUE']),
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
+        #    sample=config['SAMPLE']),
         #expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
         #    sample=config['SAMPLE']),
 
@@ -32,6 +32,11 @@ rule fastqc:
     threads: 1
     params:
         outdir=config['fastqc_dir']
+    resources:
+        nodes=1,
+        task=1,
+        mem="10G",
+        time="06:00:00"
     shell:
         """
         module load gcc/11.3.0
@@ -53,6 +58,13 @@ rule trimming:
         "logs/trimmomatic/{sample}.log"
     wildcard_constraints:
         sample='|'.join(config['SAMPLE'])
+    resources:
+        nodes=1,
+        ntask=1,
+        cpus=1,
+        mem_mb=10000,
+        runtime="06:00:00",
+        tmpdir='/tmp'
     threads: 1
     shell:
         """
@@ -64,6 +76,11 @@ rule trimming:
 #rule bwa-mem2_index:
 #	input:
 #		config['genome']
+#    resources:
+#        nodes=1,
+#        task=1,
+#        mem="200G",
+#        time="02:00:00"
 #	shell:
 #		"bwa-mem2 index {input}"
 
@@ -75,7 +92,14 @@ rule map:
         index = config['genome']
     output:
         os.path.join(config['mapping_dir'],'{sample}.sam')
-    threads: 4
+    resources:
+        nodes=1,
+        tasks=1,
+        cpus_per_task=12,
+        mem_mb=100000,
+        runtime=480,
+        tmpdir='/tmp'
+    threads: 12
     shell:
         "bwa-mem2 mem -t {threads} {params.index} {input.forward_paired} {input.reverse_paired} > {output}"
 
@@ -85,13 +109,14 @@ rule samtools_sort:
     output:
         os.path.join(config['mapping_dir'],'{sample}_sorted.bam')
     threads: 4
+    resources:
+        nodes=1,
+        task=1,
+        cpu_per_task=4,
+        mem="20G",
+        time="06:00:00"
     shell:
-        """
-        module load gcc/11.3.0
-        module load intel/2021.6.0
-        module load samtools
-        samtools sort {input} -o {output} -@ {threads}
-        """
+        "samtools sort {input} -o {output} -@ {threads}"
 
 rule samtools_index:
     input:
@@ -99,40 +124,45 @@ rule samtools_index:
     output:
         os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai')
     threads: 4
+    resources:
+        nodes=1,
+        task=1,
+        cpu_per_task=4,
+        mem="20G",
+        time="06:00:00"
     shell:
-        """
-        module load gcc/11.3.0
-        module load intel/2021.6.0
-        module load samtools
-        samtools index -@ {threads} {input} {output}
-        """
+        "samtools index -@ {threads} {input} {output}"
 
 rule samtools_genome_info:
     input:
         os.path.join(config['mapping_dir'],'{sample}_sorted.bam')
     output:
         os.path.join(config['mapping_dir'],'{sample}_genome.info')
+    resources:
+        nodes=1,
+        task=1,
+        mem="10G",
+        time="06:00:00"
     shell:
-        """
-        module load gcc/11.3.0
-        module load intel/2021.6.0
-        module load samtools
-        scripts/samtools_genome_info.sh {input} {output}
-        """
+        "scripts/samtools_genome_info.sh {input} {output}"
 
 rule coverage:
     input:
-        bam = os.path.join(config['mapping_dir'],'{sample}_sorted.bam'),
-        index = os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai'),
-        genome = os.path.join(config['mapping_dir'],'{sample}_genome.info')
+        os.path.join(config['mapping_dir'],'{sample}_sorted.bam')
     output:
         os.path.join(config['mapping_dir'],'{sample}_coverage.bw')
     threads: 4
+    resources:
+        nodes=1,
+        task=1,
+        cpu_per_task=4,
+        mem="20G",
+        time="06:00:00"
     shell:
         """
         module load gcc/11.3.0
         module load py-deeptools
-        bamCoverage -b {input.bam} -o {output} -p {threads} -bs 20 --normalizeUsing CPM --effectiveGenomeSize 2652783500
+        bamCoverage -b {input} -o {output} -p {threads}
         """
 
 rule combine_bigwigs:
@@ -144,14 +174,26 @@ rule combine_bigwigs:
         npz=os.path.join(config['mapping_dir'],"{tissue}_coverage.npz"),
         tsv=os.path.join(config['mapping_dir'],"{tissue}_coverage.tsv")
     threads: 4
+    resources:
+        nodes=1,
+        task=1,
+        cpu_per_task=4,
+        mem='10G',
+        time='06:00:00'
     shell:
         """
         module load gcc/11.3.0
         module load py-deeptools
-        multiBigwigSummary bins -b {input} -p {threads} -bs 20 -o {output.npz} --outRawCounts {output.tsv} --labels {params.labels}
+        multiBigwigSummary bins -b {input} -p {threads} -bs 50 -o {output.npz} --outRawCounts {output.tsv} --labels {params.labels}
         """
 
 rule peak_calling:
+    resources:
+        nodes=1,
+        task=1,
+        cpu_per_task=1,
+        mem="200G",
+        time="12:00:00"
     input:
         bam = os.path.join(config['mapping_dir'],'{sample}_sorted.bam'),
         index = os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai'),
@@ -160,6 +202,7 @@ rule peak_calling:
         #peak=os.path.join(config['peak_dir'],'{sample}_peaks.gappedPeak'),
         peak=os.path.join(config['peak_dir'],'{sample}_accessible_regions.gappedPeak')
         #summit=os.path.join(config['peak_dir'],'{sample}_summits.bed')
+    #conda: "/home/jbreda/M-F_Liver_ATAC-seq/envs/hmmratac.yml"
     shell:
         """
         source activate macs3
@@ -168,6 +211,11 @@ rule peak_calling:
 #-i {input.index} -g {input.genome} --window {config[hmmratac][window]}
 
 rule filter_peaks:
+    resources:
+        nodes=1,
+        task=1,
+        mem='10G',
+        time='04:00:00',
     input:
         os.path.join(config['peak_dir'],'{sample}_peaks.gappedPeak')
     output:
@@ -178,6 +226,11 @@ rule filter_peaks:
         """
 
 rule filter_summits:
+    resources:
+        nodes=1,
+        task=1,
+        mem='10G',
+        time='04:00:00',
     input:
         os.path.join(config['peak_dir'],'{sample}_summits.bed')
     output:
@@ -186,3 +239,44 @@ rule filter_summits:
         """
         awk -v OFS="\t" '$5>=10 {{print}}' {input} > {output}
         """
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,10 @@
 #!/bin/bash
 
-DATASETS=(SRR8119838 SRR8119839 SRR8119852 SRR8119853)
-for dataset in ${DATASETS[@]}
+module load sratoolkit
+Accession_list='resources/SRR_Acc_List.txt'
+
+while IFS= read -r line
 do
-	echo $dataset
-	fasterq-dump $dataset --outdir resources/ -p
-done
-	 	
+  echo "$line"
+  fasterq-dump "$line" --outdir /scratch/jbreda/M-F_Liver_ATAC-seq/resources/reads -p
+done < $Accession_list

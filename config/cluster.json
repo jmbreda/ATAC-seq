@@ -1,15 +1,86 @@
 {
     "__default__" :
     {
-        "time" : "01:00:00",
+        "name" : "snakejob",
+        "qos" : "serial",
+        "stdout" : "stdout/slurm-%x-%j",
+        "stderr" : "stderr/slurm-%x-%j",
+        "time" : "02:00:00",
         "n" : 1,
-        "mem" : "20G"
+        "mem" : "20G",
+        "nodes" : 1,
+        "ntasks" : 1,
+        "cpus-per-task" : 1
     },
+
+    "fastqc" :
+    {
+        "name" : "fastqc"
+    },
+
+    "trimming" :
+    {
+        "name" : "trim"
+    },
+
+    "bwa-mem2_index" :
+    {
+        "name" : "bwa-mem2_index",
+        "mem" : "100G"
+    },
+
+    "map" :
+    {
+        "name" : "map",
+        "time" : "06:00:00",
+        "cpus-per-task" : 4,
+        "mem" : "80G"
+    },
+
+    "samtools_sort" :
+    {
+        "name" : "sort",
+        "cpus-per-task" : 4
+    },
+
+    "samtools_index" :
+    {
+        "name" : "index",
+        "cpus-per-task" : 4
+    },
+
+    "samtools_genome_info" :
+    {
+        "name" : "genome_info"
+    },
+
+    "coverage" :
+    {
+        "name" : "coverage",
+        "cpus-per-task" : 4
+    },
+
+    "combine_bigwigs" :
+    {
+        "name" : "merge_bw",
+        "cpus-per-task" : 4
+    },
+
     "peak_calling" :
     {
-        "time" : "2-00:00:00",
-        "n" : 1,
+        "name" : "peak_calling",
+        "time" : "12:00:00",
         "mem" : "200G"
+    },
+
+    "filter_peaks" :
+    {
+        "name" : "filter_peaks"
+    },
+
+    "filter_summits" :
+    {
+        "name" : "filter_summits"
     }
 
 }
