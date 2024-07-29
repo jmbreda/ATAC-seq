@@ -11,16 +11,16 @@ rule all:
         #expand(os.path.join(config['fastqc_dir'],"{sample}_{read}_fastqc.html"),
         #    sample=config['SAMPLE'],
         #    read=READS),
-        expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
-            sample=config['SAMPLE'])
+        #expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
+        #    sample=config['SAMPLE'])
         #expand(os.path.join(config['mapping_dir'],'{sample}_coverage.bw'),
         #    sample=config['SAMPLE'])
         #expand(os.path.join(config['mapping_dir'],'{tissue}_coverage.tsv'),
         #    tissue=config['TISSUE'])
         #expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
         #    sample=config['SAMPLE']),
-        #expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
-        #    sample=config['SAMPLE'])
+        expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
+            sample=config['SAMPLE'])
 
 rule fastqc:
     input:
