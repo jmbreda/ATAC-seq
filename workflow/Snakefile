@@ -2,25 +2,37 @@ import os
 import pandas as pd
 
 configfile: "config/All_tissue_male_female_atac_seq.yaml"
-#configfile: "config/test_atac_seq.yaml"
-READS = ['1', '2']
+
 sample_metadata = pd.read_csv(config['sample_metadata'])
+
+def get_samples():
+    infile = config['sra_acc_list']
+    with open(infile) as f:
+        samples = f.read().splitlines()
+    return samples
+
+def get_tissues():
+    return list(sample_metadata.TISSUE.unique())
+
+wildcard_constraints:
+    sample = '|'.join(get_samples()),
+    read = '|'.join([str(r) for r in config['Reads']]),
+    tissue = '|'.join(get_tissues())
+
+
 
 rule all:
     input:
+        #expand(os.path.join(config['input_dir'],"{sample}_{read}.fastq"), sample=get_samples(), read=config['Reads']),
         #expand(os.path.join(config['fastqc_dir'],"{sample}_{read}_fastqc.html"),
-        #    sample=config['SAMPLE'],
-        #    read=READS),
+        #    sample=get_samples(),
+        #    read=config['Reads']),
         #expand(os.path.join(config['mapping_dir'],'{sample}.sam'),
-        #    sample=config['SAMPLE']),
-        #expand(os.path.join(config['mapping_dir'],'{sample}_coverage.bw'),
-        #    sample=config['SAMPLE']),
-        #expand(os.path.join(config['mapping_dir'],'{tissue}_coverage.tsv'),
-        #       tissue=config['TISSUE']),
-        expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'),
-            sample=config['SAMPLE']),
-        #expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'),
-        #    sample=config['SAMPLE']),
+        #    sample=get_samples()),
+        expand(os.path.join(config['mapping_dir'],'{sample}_coverage.bw'), sample=get_samples()),
+        #expand(os.path.join(config['mapping_dir'],'{tissue}_coverage.tsv'), tissue=get_tissues()),
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredPeaks.gappedPeak'), sample=get_samples()),
+        #expand(os.path.join(config['peak_dir'],'{sample}.filteredSummits.bed'), sample=get_samples()),
 
 rule fastqc:
     input:
@@ -42,7 +54,7 @@ rule fastqc:
 
 rule trimming:
     input:
-        ["resources/reads/{{sample}}_{read}.fastq".format(read=read) for read in READS]
+        expand(os.path.join(config['input_dir'],"{{sample}}_{read}.fastq"), read = config['Reads'])
     output:
         forward_paired = os.path.join(config['trimmomatic_dir'],"{sample}_forward_paired.fq.gz"),
         forward_unpaired = os.path.join(config['trimmomatic_dir'],"{sample}_forward_unpaired.fq.gz"),
@@ -51,8 +63,6 @@ rule trimming:
     #message: "Trimming Illumina adapters from {input.forward_read} and {input.reverse_read}"
     log:
         "logs/trimmomatic/{sample}.log"
-    wildcard_constraints:
-        sample='|'.join(config['SAMPLE'])
     threads: 1
     shell:
         """
@@ -61,23 +71,29 @@ rule trimming:
         ILLUMINACLIP:{config[adapter]} LEADING:{config[leading]} TRAILING:{config[trailing]} MINLEN:{config[minlen]}
         """
 
-#rule bwa-mem2_index:
-#	input:
-#		config['genome']
-#	shell:
-#		"bwa-mem2 index {input}"
+rule bwa_mem2_index:
+    input:
+        ref=config['genome']
+    output:
+        done="log/bwa-mem2-index.done"
+    shell:
+        """
+        bwa-mem2 index {input.ref}
+        echo "Done" > {output.done}
+        """
 
 rule map:
     input:
         forward_paired = os.path.join(config['trimmomatic_dir'],"{sample}_forward_paired.fq.gz"),
-        reverse_paired = os.path.join(config['trimmomatic_dir'],"{sample}_reverse_paired.fq.gz")
+        reverse_paired = os.path.join(config['trimmomatic_dir'],"{sample}_reverse_paired.fq.gz"),
+        index_done = "log/bwa-mem2-index.done" # this is a dummy input to ensure that the index is built before mapping
     params:
-        index = config['genome']
+        genome_index = config['genome']
     output:
         os.path.join(config['mapping_dir'],'{sample}.sam')
     threads: 4
     shell:
-        "bwa-mem2 mem -t {threads} {params.index} {input.forward_paired} {input.reverse_paired} > {output}"
+        "bwa-mem2 mem -t {threads} {params.genome_index} {input.forward_paired} {input.reverse_paired} > {output}"
 
 rule samtools_sort:
     input:
@@ -157,9 +173,8 @@ rule peak_calling:
         index = os.path.join(config['mapping_dir'],'{sample}_sorted.bam.bai'),
         genome = os.path.join(config['mapping_dir'],'{sample}_genome.info')
     output:
-        #peak=os.path.join(config['peak_dir'],'{sample}_peaks.gappedPeak'),
-        peak=os.path.join(config['peak_dir'],'{sample}_accessible_regions.gappedPeak')
-        #summit=os.path.join(config['peak_dir'],'{sample}_summits.bed')
+        peak=os.path.join(config['peak_dir'],'{sample}_accessible_regions.gappedPeak'),
+        summit=os.path.join(config['peak_dir'],'{sample}_summits.bed')
     shell:
         """
         source activate macs3

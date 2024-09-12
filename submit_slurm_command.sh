@@ -1,1 +1,0 @@
-snakemake -s workflow/atac_seq_preprocessing.smk --slurm --default-resources slurm_account=upnae qos=serial -j 4

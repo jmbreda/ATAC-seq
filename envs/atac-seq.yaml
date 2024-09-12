@@ -1,0 +1,15 @@
+name: atac-seq
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - pybigwig
+    - snakemake=7.32
+    - h5py
+    - matplotlib
+    - ipython
+    - scipy
+    - numpy
+    - pandas
+    - samtools

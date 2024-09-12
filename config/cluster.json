@@ -13,6 +13,14 @@
         "cpus-per-task" : 1
     },
 
+    "download" :
+    {
+        "name" : "download",
+        "time" : "24:00:00",
+        "mem" : "50G",
+        "cpus-per-task" : 8
+    },
+
     "fastqc" :
     {
         "name" : "fastqc"
@@ -23,7 +31,7 @@
         "name" : "trim"
     },
 
-    "bwa-mem2_index" :
+    "bwa_mem2_index" :
     {
         "name" : "bwa-mem2_index",
         "mem" : "100G"
@@ -33,7 +41,7 @@
     {
         "name" : "map",
         "time" : "06:00:00",
-        "cpus-per-task" : 4,
+        "cpus-per-task" : 12,
         "mem" : "80G"
     },
 
